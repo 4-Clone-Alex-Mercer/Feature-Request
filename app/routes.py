@@ -12,3 +12,11 @@ def index():
 def getRequests():
     from app.helpers import getRequests
     return jsonify(getRequests())
+
+
+@routes.route('/request/create', methods=['GET', 'POST'])
+def createRequest():
+    if request.method == "POST":
+        data = request.form.to_dict()
+        from app.helpers import addFeatueRequest
+        return jsonify(addFeatueRequest(data))
