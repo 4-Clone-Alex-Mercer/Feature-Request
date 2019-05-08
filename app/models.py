@@ -33,6 +33,18 @@ class FeatureRequest(db.Model):
     client_id = Column(Integer, ForeignKey('client.id'), nullable=False)
     product_area_id = Column(Integer, ForeignKey('product_area.id'), nullable=False)
 
+    @property
+    def serialize(self):
+
+        return {
+            'title': self.title,
+            'description': self.description,
+            'target_date': self.target_date,
+            'client_priority': self.client_priority,
+            'client': self.client.name,
+            'product_area': self.product_area.name     
+        }
+
     def __repr__(self):
 
             return 'title: %s  description: %s target_date: %s client_priority: %s client_id: %s product_area_id %s' % (self.title, self.description, self.target_date, self.client_priority, self.client_id, self.product_area_id )
