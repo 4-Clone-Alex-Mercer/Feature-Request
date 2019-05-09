@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, jsonify
+from flask import render_template, Blueprint, jsonify, request
 
 routes = Blueprint('routes', __name__, static_folder='./app/static')
 
