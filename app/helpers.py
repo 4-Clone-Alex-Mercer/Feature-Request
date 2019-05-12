@@ -23,18 +23,17 @@ def addFeatueRequest(req):
     areaId = str(getAreaName(req['product_area']))
     featureRequest = FeatureRequest(title=req['title'], description=req['description'],
                              target_date=req['target_date'], client_priority=req['client_priority'], client_id=clientId, product_area_id=areaId)                   
-    checkPriority(req['client_priority'])                         
+    checkPriority(req['client_priority'], clientId)                         
     db.session.add(featureRequest)
     db.session.commit() 
     return req
 
 
-def checkPriority(priority):
+def checkPriority(priority, clientId):
     requests = FeatureRequest.query.all()
     for request in requests:
-        if int(priority) <= request.client_priority: 
+        if int(priority) <= request.client_priority and int(clientId) == request.client_id: 
             request.client_priority += 1
-            print(request.client_priority)
             db.session.commit()
 
 
