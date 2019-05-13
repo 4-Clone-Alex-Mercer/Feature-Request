@@ -20,3 +20,18 @@ def createRequest():
         data = request.form.to_dict()
         from app.helpers import addFeatueRequest
         return jsonify(addFeatueRequest(data))
+
+
+@routes.route('/request/update', methods=['GET', 'PUT'])
+def updateRequest():
+    print(request.form)    
+    if request.method == "PUT":
+       print(2)
+
+
+
+@routes.route('/request/delete', methods=['GET', 'DELETE'])
+def deleteRequest():
+    print(request.form)
+    if request.method == "DELETE":
+       print(1)        
