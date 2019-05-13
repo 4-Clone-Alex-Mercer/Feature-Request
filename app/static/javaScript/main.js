@@ -13,6 +13,16 @@ $(document).ready(function () {
                 type: "POST",
                 dataType: "json"
             },
+            update: {
+                url: "/request/update",
+                type: "PUT",
+                dataType: "json"
+            },
+            destroy: {
+                url: "/request/delete",
+                type: "DELETE",
+                dataType: "json"
+            },
             parameterMap:  (options, operation) =>  {
                 if (operation !== "read" && options.models) {
                     const data = options.models[0]
@@ -57,6 +67,7 @@ $(document).ready(function () {
             { field: "client_priority", title: "Client_priority" },
             { field: "client", title: "Client" },
             { field: "product_area", title: "Product_area" },
+            { command: ["edit", "destroy"], title: "&nbsp;" }
         ],
 
     });
