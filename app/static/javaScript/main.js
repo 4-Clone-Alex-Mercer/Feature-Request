@@ -24,6 +24,7 @@ $(document).ready(function () {
                 dataType: "json"
             },
             parameterMap:  (options, operation) =>  {
+                console.log(options.models)
                 if (operation !== "read" && options.models) {
                     const data = options.models[0]
                     return data;
@@ -31,6 +32,7 @@ $(document).ready(function () {
             }
         },
         batch: true,
+        pageSize: 10,
         schema: {
             model: {
                 id: "FeatureID",
@@ -55,12 +57,14 @@ $(document).ready(function () {
         pageable: {
             refresh: true,
             pageSizes: true,
-            buttonCount: 5
+            buttonCount: 5,
+            pageSize: [5, 10, 20],
         },
         toolbar: ["create"],
         editable: "popup",
         edit: EditPopup,
         columns: [
+            { field: "requestId", title: "Id", width:70 },
             { field: "title", title: "Title" },
             { field: "description", title: "Description" },
             { field: "target_date", title: "Target_date" },
@@ -80,5 +84,7 @@ EditPopup = (e) => {
     if (e.model.isNew()) {
         $('.k-window-title').text("Feature Request");
         $('.k-grid-update').text("Save");
+        $('.k-edit-field').first().remove();
+        $('.k-edit-label').first().remove();
     }
 }
