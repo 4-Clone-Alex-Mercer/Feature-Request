@@ -37,6 +37,7 @@ class FeatureRequest(db.Model):
     def serialize(self):
 
         return {
+            'requestId': self.id,
             'title': self.title,
             'description': self.description,
             'target_date': self.target_date,
