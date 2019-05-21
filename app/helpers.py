@@ -10,17 +10,17 @@ def getRequests():
     return requestsList
  
 
-def getClientName(name):
+def getClientId(name):
     return Client.query.filter(Client.name == name).first().id
     
 
-def getAreaName(name):
+def getAreaId(name):
     return ProductArea.query.filter(ProductArea.name == name).first().id
 
 
 def addFeatueRequest(req):
-    clientId = str(getClientName(req['client']))
-    areaId = str(getAreaName(req['product_area']))
+    clientId = str(getClientId(req['client']))
+    areaId = str(getAreaId(req['product_area']))
     featureRequest = FeatureRequest(title=req['title'], description=req['description'],
                              target_date=req['target_date'], client_priority=req['client_priority'], client_id=clientId, product_area_id=areaId)                   
     checkPriority(req['client_priority'], clientId)                         
@@ -37,5 +37,24 @@ def checkPriority(priority, clientId):
             db.session.commit()
 
 
-
+def updateRequest(req):
+    request = FeatureRequest.query.filter(FeatureRequest.id == req['requestId']).first()
     
+    clientId = str(getClientId(req['client']))
+    areaId = str(getAreaId(req['product_area']))
+    print(request)
+    request.title = req['title']
+    request.description = req['description']
+    request.target_date = req['target_date']                                                      
+    request.client_priority = req['client_priority']                                  
+    # request.client_id = int(clientId) 
+    # request.product_area = int(areaId)  
+    db.session.commit()
+
+    return req
+
+def deleteRequest(req):
+    request = FeatureRequest.query.filter(FeatureRequest.id == req['requestId']).first()
+    db.session.delete(request)
+    db.session.commit()
+    return req
