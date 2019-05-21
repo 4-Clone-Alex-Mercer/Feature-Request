@@ -4,32 +4,61 @@ $(document).ready(function () {
 
     dataSource = new kendo.data.DataSource({
         transport: {
-            read: {
-                url: "/requests",
-                dataType: "json"
+            read: function(options) {
+                $.ajax({
+                    type: "GET",
+                    url: "/requests",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    success: function(data) {
+                        options.success(data);
+                    }
+                });
             },
-            create: {
-                url: "/request/create",
-                type: "POST",
-                dataType: "json"
+            create: function(options) {
+                $.ajax({
+                    type: "POST",
+                    url: "/request/create",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify(options.data.models[0]),
+                    success: function(data) {
+                        options.success(data);
+                    }
+                });
             },
-            update: {
-                url: "/request/update",
-                type: "PUT",
-                dataType: "json"
+            update: function(options) {
+                $.ajax({
+                    type: "PUT",
+                    url: "/request/update",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify(options.data.models[0]),
+                    success: function(data) {
+                        options.success(data);
+                    }
+                });
             },
-            destroy: {
-                url: "/request/delete",
-                type: "DELETE",
-                dataType: "json"
+            destroy: function(options) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/request/delete",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    data: JSON.stringify(options.data.models[0]),
+                    success: function(data) {
+                        options.success(data);
+                    }
+                });
             },
-            parameterMap:  (options, operation) =>  {
-                console.log(options.models)
-                if (operation !== "read" && options.models) {
-                    const data = options.models[0]
-                    return data;
-                }
-            }
+            // parameterMap:  (options, operation) =>  {
+                
+            //     if (operation !== "read" && options.models) {
+            //         console.log(operation)
+            //         const data = options.models[0]
+            //         return data;
+            //     }
+            // }
         },
         batch: true,
         pageSize: 10,
@@ -84,7 +113,9 @@ EditPopup = (e) => {
     if (e.model.isNew()) {
         $('.k-window-title').text("Feature Request");
         $('.k-grid-update').text("Save");
+        // $('.k-edit-field').first().remove();
+        // $('.k-edit-label').first().remove();
+    }
         $('.k-edit-field').first().remove();
         $('.k-edit-label').first().remove();
-    }
 }
