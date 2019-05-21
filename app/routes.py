@@ -15,23 +15,30 @@ def getRequests():
 
 
 @routes.route('/request/create', methods=['GET', 'POST'])
-def createRequest():
+def createRequests():
+    print(1)
     if request.method == "POST":
-        data = request.form.to_dict()
+        print(request.get_json())
+        data = request.get_json()
         from app.helpers import addFeatueRequest
         return jsonify(addFeatueRequest(data))
 
 
 @routes.route('/request/update', methods=['GET', 'PUT'])
-def updateRequest():
-    print(request.form)    
+def updateRequests():
+    print(2)    
     if request.method == "PUT":
-       print(2)
+        data =  request.get_json()
+        from app.helpers import updateRequest
+        return jsonify(updateRequest(data))
 
 
 
 @routes.route('/request/delete', methods=['GET', 'DELETE'])
-def deleteRequest():
-    print(request.form)
+def deleteRequests():   
+    print(3)
     if request.method == "DELETE":
-       print(1)        
+        data =  request.get_json()
+        from app.helpers import deleteRequest
+        return jsonify(deleteRequest(data))
+     
