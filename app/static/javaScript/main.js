@@ -116,8 +116,8 @@ $(document).ready(function () {
             { field: "description", title: "Description" },
             { field: "target_date", title: "Target_date" },
             { field: "client_priority", title: "Client_priority" },
-            { field: "client", title: "Client" },
-            { field: "product_area", title: "Product_area" },
+            { field: "client", title: "Client", editor: clientDropDownEditor},
+            { field: "product_area", title: "Product_area"},
             { command: ["edit", "destroy"], title: "&nbsp;" }
         ],
 
@@ -131,7 +131,26 @@ EditPopup = (e) => {
     if (e.model.isNew()) {
         $('.k-window-title').text("Feature Request");
         $('.k-grid-update').text("Save");
+        
     }
         $('.k-edit-field').first().remove();
         $('.k-edit-label').first().remove();
 }
+
+function clientDropDownEditor(container, options) {
+    if (options.model.isNew()) {
+        $('<input required name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: "/clients"
+                        }
+                    }
+                    
+                });
+    }
+}
+
