@@ -11,13 +11,17 @@ def getRequests():
  
 def getClients():
     clients = Client.query.all()
-    print(clients)
     clientList = []
     for client in clients:
         clientList.append(client.name)
     return clientList
 
-
+def getAreas():
+    areas = ProductArea.query.all()
+    areaList = []
+    for area in areas:
+        areaList.append(area.name)
+    return areaList
     
 def getClientId(name):
     return Client.query.filter(Client.name == name).first().id
