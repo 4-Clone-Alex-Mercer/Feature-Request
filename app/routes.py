@@ -20,6 +20,11 @@ def getClients():
     return jsonify(getClients())
 
 
+@routes.route('/areas', methods=['GET'])
+def getAreas():
+    from app.helpers import getAreas
+    return jsonify(getAreas())
+
 
 @routes.route('/request/create', methods=['GET', 'POST'])
 def createRequests():
