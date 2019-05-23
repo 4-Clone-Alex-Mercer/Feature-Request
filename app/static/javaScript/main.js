@@ -21,8 +21,14 @@ $(document).ready(function () {
                     url: "/request/create",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
+                    headers: {
+                        "Access-Control-Allow-Origin":"*",
+                        "Access-Control-Allow-Headers":"Content-Type, X-Requested-With, Origin, Accept",
+                        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
+                    },
                     data: JSON.stringify(options.data.models[0]),
                     success: function(data) {
+                        $("#grid").data("kendoGrid").dataSource.read(); 
                         options.success(data);
                     }
                 });
@@ -33,8 +39,14 @@ $(document).ready(function () {
                     url: "/request/update",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
+                    headers: {
+                        "Access-Control-Allow-Origin":"*",
+                        "Access-Control-Allow-Headers":"Content-Type, X-Requested-With, Origin, Accept",
+                        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
+                    },
                     data: JSON.stringify(options.data.models[0]),
                     success: function(data) {
+                        $("#grid").data("kendoGrid").dataSource.read(); 
                         options.success(data);
                     }
                 });
@@ -45,20 +57,26 @@ $(document).ready(function () {
                     url: "/request/delete",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
+                    headers: {
+                        "Access-Control-Allow-Origin":"*",
+                        "Access-Control-Allow-Headers":"Content-Type, X-Requested-With, Origin, Accept",
+                        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
+                    },
                     data: JSON.stringify(options.data.models[0]),
                     success: function(data) {
+                        $("#grid").data("kendoGrid").dataSource.read(); 
                         options.success(data);
                     }
                 });
             },
-            // parameterMap:  (options, operation) =>  {
+            parameterMap:  (options, operation) =>  {
                 
-            //     if (operation !== "read" && options.models) {
-            //         console.log(operation)
-            //         const data = options.models[0]
-            //         return data;
-            //     }
-            // }
+                if (operation !== "read" && options.models) {
+                    console.log(operation)
+                    const data = options.models[0]
+                    return data;
+                }
+            }
         },
         batch: true,
         pageSize: 10,
@@ -113,8 +131,6 @@ EditPopup = (e) => {
     if (e.model.isNew()) {
         $('.k-window-title').text("Feature Request");
         $('.k-grid-update').text("Save");
-        // $('.k-edit-field').first().remove();
-        // $('.k-edit-label').first().remove();
     }
         $('.k-edit-field').first().remove();
         $('.k-edit-label').first().remove();
