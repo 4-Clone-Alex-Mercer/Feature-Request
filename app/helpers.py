@@ -18,23 +18,28 @@ def getAreaId(name):
     return ProductArea.query.filter(ProductArea.name == name).first().id
 
 
-def addFeatueRequest(req):
-    # clientId = str(getClientId(req['client']))
-    # areaId = str(getAreaId(req['product_area']))
-    # featureRequest = FeatureRequest(title=req['title'], description=req['description'],
-    #                          target_date=req['target_date'], client_priority=req['client_priority'], client_id=clientId, product_area_id=areaId)                   
-    # checkPriority(req['client_priority'], clientId)                         
-    # db.session.add(featureRequest)
-    # db.session.commit() 
+def addFeatueRequest(req): 
+    clientId = str(getClientId(req['client']))
+    areaId = str(getAreaId(req['product_area']))
+    featureRequest = FeatureRequest(title=req['title'], description=req['description'],
+                             target_date=req['target_date'], client_priority=req['client_priority'], client_id=clientId, product_area_id=areaId)                   
+                           
+    db.session.add(featureRequest)
+    db.session.commit() 
+    checkPriority(req['client_priority'], clientId, None)  
     return req
 
 
-def checkPriority(priority, clientId):
+def checkPriority(priority, clientId, requestId):
+    if requestId == None:
+        requestId = FeatureRequest.query.order_by(FeatureRequest.id.desc()).first().id
+
     requests = FeatureRequest.query.all()
-    for request in requests:
-        if int(priority) <= request.client_priority and int(clientId) == request.client_id: 
-            request.client_priority += 1
-            db.session.commit()
+    for request in requests:   
+        if request.serialize['requestId'] != requestId:
+            if int(priority) <= request.client_priority and int(clientId) == request.client_id: 
+                request.client_priority += 1
+                db.session.commit()
 
 
 def updateRequest(req):
@@ -52,7 +57,7 @@ def updateRequest(req):
     
     
     db.session.commit()
-
+    checkPriority(req['client_priority'], clientId, req['requestId']) 
     return req
 
 def deleteRequest(req):
