@@ -14,6 +14,13 @@ def getRequests():
     return jsonify(getRequests())
 
 
+@routes.route('/clients', methods=['GET'])
+def getClients():
+    from app.helpers import getClients
+    return jsonify(getClients())
+
+
+
 @routes.route('/request/create', methods=['GET', 'POST'])
 def createRequests():
     print(1)
