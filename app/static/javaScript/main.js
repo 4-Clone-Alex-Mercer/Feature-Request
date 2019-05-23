@@ -4,79 +4,71 @@ $(document).ready(function () {
 
     dataSource = new kendo.data.DataSource({
         transport: {
-            read: function(options) {
+            read: function (options) {
                 $.ajax({
                     type: "GET",
                     url: "/requests",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         options.success(data);
                     }
                 });
             },
-            create: function(options) {
+            create: function (options) {
                 $.ajax({
                     type: "POST",
                     url: "/request/create",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     headers: {
-                        "Access-Control-Allow-Origin":"*",
-                        "Access-Control-Allow-Headers":"Content-Type, X-Requested-With, Origin, Accept",
-                        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "Content-Type, X-Requested-With, Origin, Accept",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
                     },
                     data: JSON.stringify(options.data.models[0]),
-                    success: function(data) {
-                        $("#grid").data("kendoGrid").dataSource.read(); 
+                    success: function (data) {
+                        $("#grid").data("kendoGrid").dataSource.read();
                         options.success(data);
                     }
                 });
             },
-            update: function(options) {
+            update: function (options) {
                 $.ajax({
                     type: "PUT",
                     url: "/request/update",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     headers: {
-                        "Access-Control-Allow-Origin":"*",
-                        "Access-Control-Allow-Headers":"Content-Type, X-Requested-With, Origin, Accept",
-                        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "Content-Type, X-Requested-With, Origin, Accept",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
                     },
                     data: JSON.stringify(options.data.models[0]),
-                    success: function(data) {
-                        $("#grid").data("kendoGrid").dataSource.read(); 
+                    success: function (data) {
+                        $("#grid").data("kendoGrid").dataSource.read();
                         options.success(data);
                     }
                 });
             },
-            destroy: function(options) {
+            destroy: function (options) {
                 $.ajax({
                     type: "DELETE",
                     url: "/request/delete",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     headers: {
-                        "Access-Control-Allow-Origin":"*",
-                        "Access-Control-Allow-Headers":"Content-Type, X-Requested-With, Origin, Accept",
-                        "Access-Control-Allow-Methods":"GET, POST, PUT, DELETE, OPTIONS"
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Headers": "Content-Type, X-Requested-With, Origin, Accept",
+                        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
                     },
                     data: JSON.stringify(options.data.models[0]),
-                    success: function(data) {
-                        $("#grid").data("kendoGrid").dataSource.read(); 
+                    success: function (data) {
+                        $("#grid").data("kendoGrid").dataSource.read();
                         options.success(data);
                     }
                 });
             },
-            parameterMap:  (options, operation) =>  {
-                
-                if (operation !== "read" && options.models) {
-                    console.log(operation)
-                    const data = options.models[0]
-                    return data;
-                }
-            }
         },
         batch: true,
         pageSize: 10,
@@ -87,7 +79,7 @@ $(document).ready(function () {
                     title: { type: "string", validation: { required: true } },
                     description: { type: "string", validation: { required: true } },
                     target_date: { type: "date", validation: { required: true } },
-                    client_priority: { type: "number", validation: {min:1 , required: true } },
+                    client_priority: { type: "number", validation: { min: 1, required: true } },
                     client: { type: "string", validation: { required: true } },
                     product_area: { type: "string", validation: { required: true } }
                 }
@@ -111,12 +103,12 @@ $(document).ready(function () {
         editable: "popup",
         edit: EditPopup,
         columns: [
-            { field: "requestId", title: "Id", width:70 },
+            { field: "requestId", title: "Id", width: 70 },
             { field: "title", title: "Title" },
             { field: "description", title: "Description" },
-            { field: "target_date", title: "Target_date" },
+            { field: "target_date", title: "Target_date", template: '#= kendo.toString(kendo.parseDate(target_date))#' },
             { field: "client_priority", title: "Client_priority" },
-            { field: "client", title: "Client", editor: clientDropDownEditor},
+            { field: "client", title: "Client", editor: clientDropDownEditor },
             { field: "product_area", title: "Product_area", editor: areaDropDownEditor },
             { command: ["edit", "destroy"], title: "&nbsp;" }
         ],
@@ -131,42 +123,42 @@ EditPopup = (e) => {
     if (e.model.isNew()) {
         $('.k-window-title').text("Feature Request");
         $('.k-grid-update').text("Save");
-        
+
     }
-        $('.k-edit-field').first().remove();
-        $('.k-edit-label').first().remove();
+    $('.k-edit-field').first().remove();
+    $('.k-edit-label').first().remove();
 }
 
 function clientDropDownEditor(container, options) {
     if (options.model.isNew()) {
         $('<input required name="' + options.field + '"/>')
-                .appendTo(container)
-                .kendoDropDownList({
-                    autoBind: false,
-                    dataSource: {
-                        type: "json",
-                        transport: {
-                            read: "/clients"
-                        }
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: "/clients"
                     }
-                    
-                });
+                }
+
+            });
     }
 }
 
 function areaDropDownEditor(container, options) {
     if (options.model.isNew()) {
         $('<input required name="' + options.field + '"/>')
-                .appendTo(container)
-                .kendoDropDownList({
-                    autoBind: false,
-                    dataSource: {
-                        type: "json",
-                        transport: {
-                            read: "/areas"
-                        }
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: "/areas"
                     }
-                    
-                });
+                }
+
+            });
     }
 }
