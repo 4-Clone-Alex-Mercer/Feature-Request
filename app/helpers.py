@@ -9,7 +9,16 @@ def getRequests():
         requestsList.append(request.serialize)
     return requestsList
  
+def getClients():
+    clients = Client.query.all()
+    print(clients)
+    clientList = []
+    for client in clients:
+        clientList.append(client.name)
+    return clientList
 
+
+    
 def getClientId(name):
     return Client.query.filter(Client.name == name).first().id
     
