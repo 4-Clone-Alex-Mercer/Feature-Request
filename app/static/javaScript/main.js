@@ -117,7 +117,7 @@ $(document).ready(function () {
             { field: "target_date", title: "Target_date" },
             { field: "client_priority", title: "Client_priority" },
             { field: "client", title: "Client", editor: clientDropDownEditor},
-            { field: "product_area", title: "Product_area"},
+            { field: "product_area", title: "Product_area", editor: areaDropDownEditor },
             { command: ["edit", "destroy"], title: "&nbsp;" }
         ],
 
@@ -154,3 +154,19 @@ function clientDropDownEditor(container, options) {
     }
 }
 
+function areaDropDownEditor(container, options) {
+    if (options.model.isNew()) {
+        $('<input required name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: "/areas"
+                        }
+                    }
+                    
+                });
+    }
+}
