@@ -47,12 +47,11 @@ def checkPriority(priority, clientId, requestId):
     if requestId == None:
         requestId = FeatureRequest.query.order_by(FeatureRequest.id.desc()).first().id
 
-    requests = FeatureRequest.query.all()
+    requests = FeatureRequest.query.filter(FeatureRequest.client_id == clientId)
     for request in requests:   
-        if request.serialize['requestId'] != requestId:
-            if int(priority) <= request.client_priority and int(clientId) == request.client_id: 
-                request.client_priority += 1
-                db.session.commit()
+        if request.serialize['requestId'] != requestId and int(priority) <= request.client_priority:
+            request.client_priority += 1
+            db.session.commit()
 
 
 def updateRequest(req):
@@ -73,8 +72,8 @@ def updateRequest(req):
     checkPriority(req['client_priority'], clientId, req['requestId']) 
     return req
 
-def deleteRequest(req):
-    request = FeatureRequest.query.filter(FeatureRequest.id == req['requestId']).first()
+def deleteRequest(id):
+    request = FeatureRequest.query.filter(FeatureRequest.id == id).first()
     db.session.delete(request)
     db.session.commit()
-    return req
+    return 'request'
