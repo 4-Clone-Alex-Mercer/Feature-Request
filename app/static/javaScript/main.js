@@ -106,7 +106,7 @@ $(document).ready(function () {
             { field: "requestId", title: "Id", width: 70 },
             { field: "title", title: "Title" },
             { field: "description", title: "Description" },
-            { field: "target_date", title: "Target_date", template: '#= kendo.toString(kendo.parseDate(target_date))#' },
+            { field: "target_date", title: "Target_date", template: '#= kendo.toString(kendo.parseDate(target_date), "dd/MM/yyyy")#' },
             { field: "client_priority", title: "Client_priority" },
             { field: "client", title: "Client", editor: clientDropDownEditor },
             { field: "product_area", title: "Product_area", editor: areaDropDownEditor },
