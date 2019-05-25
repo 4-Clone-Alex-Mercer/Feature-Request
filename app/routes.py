@@ -1,5 +1,4 @@
 from flask import render_template, Blueprint, jsonify, request
-
 routes = Blueprint('routes', __name__, static_folder='./app/static')
 
 
@@ -26,31 +25,28 @@ def getAreas():
     return jsonify(getAreas())
 
 
-@routes.route('/request/create', methods=['GET', 'POST'])
+@routes.route('/request/create', methods=['POST'])
 def createRequests():
     print(1)
-    if request.method == "POST":
-        print(request.get_json())
-        data = request.get_json()
-        from app.helpers import addFeatueRequest
-        return jsonify(addFeatueRequest(data))
+    from app.helpers import validatePostRequest, addFeatueRequest
+    data = request.get_json()
+    if request.method == "POST" and validatePostRequest(data):
+        return jsonify(addFeatueRequest(data)) 
+  
 
-
-@routes.route('/request/update', methods=['GET', 'PUT'])
+@routes.route('/request/update', methods=['PUT'])
 def updateRequests():
-    print(2)    
-    if request.method == "PUT":
-        data =  request.get_json()
-        from app.helpers import updateRequest
+    print(2)
+    from app.helpers import validatePostRequest, updateRequest
+    data = request.get_json()
+    if request.method == "PUT" and validatePostRequest(data):
         return jsonify(updateRequest(data))
 
 
-
-@routes.route('/request/delete', methods=['GET', 'DELETE'])
-def deleteRequests():   
+@routes.route('/request/delete', methods=['DELETE'])
+def deleteRequests():
     print(3)
     if request.method == "DELETE":
-        data =  request.get_json()
+        data = request.get_json()
         from app.helpers import deleteRequest
         return jsonify(deleteRequest(data))
-     
