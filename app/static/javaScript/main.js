@@ -20,7 +20,7 @@ $(document).ready(function () {
                     type: "POST",
                     url: "/request/create",
                     contentType: "application/json; charset=utf-8",
-                    dataType: 'application/json',
+                    dataType: 'json',
                     data: JSON.stringify(options.data.models[0]),
                     success: function (data) {
                         $("#grid").data("kendoGrid").dataSource.read();
@@ -33,7 +33,7 @@ $(document).ready(function () {
                     type: "PUT",
                     url: "/request/update",
                     contentType: "application/json; charset=utf-8",
-                    dataType: 'application/json',
+                    dataType: 'json',
                     data: JSON.stringify(options.data.models[0]),
                     success: function (data) {
                         $("#grid").data("kendoGrid").dataSource.read();
@@ -46,7 +46,7 @@ $(document).ready(function () {
                     type: "DELETE",
                     url: "/request/delete",
                     contentType: "application/json; charset=utf-8",
-                    dataType: 'application/json',
+                    dataType: 'json',
                     data: JSON.stringify(options.data.models[0].requestId),
                     success: function (data) {
                         $("#grid").data("kendoGrid").dataSource.read();

@@ -8,45 +8,41 @@ def index():
 
 
 @routes.route('/requests', methods=['GET'])
-def getRequests():
-    from app.helpers import getRequests
-    return jsonify(getRequests())
+def getAllRequests():
+    from app.helpers import getAllRequests
+    return jsonify(getAllRequests())
 
 
 @routes.route('/clients', methods=['GET'])
-def getClients():
-    from app.helpers import getClients
-    return jsonify(getClients())
+def getAllClients():
+    from app.helpers import getAllClients
+    return jsonify(getAllClients())
 
 
 @routes.route('/areas', methods=['GET'])
-def getAreas():
-    from app.helpers import getAreas
-    return jsonify(getAreas())
+def getAllAreas():
+    from app.helpers import getAllAreas
+    return jsonify(getAllAreas())
 
 
 @routes.route('/request/create', methods=['POST'])
-def createRequests():
-    print(1)
-    from app.helpers import validatePostRequest, addFeatueRequest
+def createFeatureRequests():
+    from app.helpers import validateRequests, createFeatueRequest
     data = request.get_json()
-    if request.method == "POST" and validatePostRequest(data):
-        return jsonify(addFeatueRequest(data)) 
-  
+    if validateRequests(data):
+        return jsonify(createFeatueRequest(data))
+
 
 @routes.route('/request/update', methods=['PUT'])
-def updateRequests():
-    print(2)
-    from app.helpers import validatePostRequest, updateRequest
+def updateFeatureRequests():
+    from app.helpers import validateRequests, updateFeatureRequest
     data = request.get_json()
-    if request.method == "PUT" and validatePostRequest(data):
-        return jsonify(updateRequest(data))
+    if validateRequests(data):
+        return jsonify(updateFeatureRequest(data))
 
 
 @routes.route('/request/delete', methods=['DELETE'])
-def deleteRequests():
-    print(3)
-    if request.method == "DELETE":
-        data = request.get_json()
-        from app.helpers import deleteRequest
-        return jsonify(deleteRequest(data))
+def deleteFeatureRequests():
+    data = request.get_json()
+    from app.helpers import deleteFeatureRequest
+    return jsonify(deleteFeatureRequest(data))

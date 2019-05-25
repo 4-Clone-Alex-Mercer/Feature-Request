@@ -3,7 +3,6 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 import unittest
 from app.models import Client, ProductArea, FeatureRequest
-from app.helpers import checkPriority
 from app import create_app, db
 from flask_testing import TestCase
 from flask import json
@@ -69,7 +68,7 @@ class FeatureRequestsTestCase(BaseTestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertIn('text/html', str(response.headers))
-        self.assertIn(b'Feature Request', response.data)
+
 
     def test_get_feature_requests(self):
         response = self.client.get("/requests")
@@ -78,15 +77,14 @@ class FeatureRequestsTestCase(BaseTestCase):
         for content in contents:
             self.assertIn(content, str(response.data))
 
-    def test_post_feature_request(self):
+    def test_create_feature_request(self):
 
         data = {'title': 'Title', 'description': 'Description',
                 'target_date': '2019-1-7', 'client_priority': 1, 'client': 'Client A', 'product_area': 'Claims'}
 
         response = self.client.post(
             '/request/create',
-            headers={'Accept': 'application/json',
-                     'Content-Type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             data=json.dumps(data),
         )
         self.assertEqual(200, response.status_code)
@@ -98,32 +96,29 @@ class FeatureRequestsTestCase(BaseTestCase):
 
         response = self.client.put(
             '/request/update',
-            headers={'Accept': 'application/json',
-                     'Content-Type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             data=json.dumps(data),
         )
         self.assertEqual(200, response.status_code)
 
     def test_delete_feature_request(self):
 
-        data = {'requestId': '2'}
+        data = "2"
 
         response = self.client.delete(
             '/request/delete',
-            headers={'Accept': 'application/json',
-                     'Content-Type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             data=json.dumps(data),
         )
         self.assertEqual(200, response.status_code)
 
-    def test_check_praiority(self):
+    def test_update_praiority(self):
         data = {'title': 'Title', 'description': 'Description',
                 'target_date': '2019-1-7', 'client_priority': 1, 'client': 'Client A', 'product_area': 'Claims'}
 
         response = self.client.post(
             '/request/create',
-            headers={'Accept': 'application/json',
-                     'Content-Type': 'application/json'},
+            headers={'Content-Type': 'application/json'},
             data=json.dumps(data),
         )
         response = self.client.get("/requests")
