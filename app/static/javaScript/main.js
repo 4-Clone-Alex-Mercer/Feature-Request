@@ -116,6 +116,8 @@ function clientDropDownEditor(container, options) {
         .appendTo(container)
         .kendoDropDownList({
             autoBind: false,
+            dataTextField: "name",
+            dataValueField: "id",
             dataSource: {
                 transport: {
                     read: "/clients"
@@ -130,6 +132,8 @@ function areaDropDownEditor(container, options) {
         .appendTo(container)
         .kendoDropDownList({
             autoBind: false,
+            dataTextField: "name",
+            dataValueField: "id",
             dataSource: {
                 transport: {
                     read: "/areas"
