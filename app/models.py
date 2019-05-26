@@ -11,7 +11,7 @@ class Client(db.Model):
         'FeatureRequest', backref='client', lazy=True)
 
     def __repr__(self):
-        return 'name: %s' % (self.name)
+        return 'id: %s name: %s' % (self.id, self.name)
 
 
 class ProductArea(db.Model):
@@ -22,7 +22,7 @@ class ProductArea(db.Model):
         'FeatureRequest', backref='product_area', lazy=True)
 
     def __repr__(self):
-        return 'name: %s' % (self.name)
+        return 'id: %s name: %s' % (self.id, self.name)
 
 
 class FeatureRequest(db.Model):
