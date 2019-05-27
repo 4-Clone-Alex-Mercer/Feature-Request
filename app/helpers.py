@@ -3,7 +3,7 @@ from app.models import FeatureRequest, ProductArea, Client
 
 
 def validateRequests(req):
-
+    """Validates Wither The Request Is In The Right Format Or Not"""
     if len(req['title']) <= 50:
         if len(req['description']) <= 1500:
             if type(req['target_date']) == str:
@@ -15,6 +15,7 @@ def validateRequests(req):
 
 
 def getAllRequests():
+    """Returns A List Of All The Feature Requests"""
     requests = FeatureRequest.query.all()
     requestsList = []
     for request in requests:
@@ -23,6 +24,7 @@ def getAllRequests():
 
 
 def getAllClients():
+    """Returns A List Of All The Clients"""
     clients = Client.query.all()
     clientList = []
     for client in clients:
@@ -31,6 +33,7 @@ def getAllClients():
 
 
 def getAllAreas():
+    """Returns A List Of All The Product Areas"""
     areas = ProductArea.query.all()
     areaList = []
     for area in areas:
@@ -39,6 +42,7 @@ def getAllAreas():
 
 
 def createFeatueRequest(req):
+    """Saves A Feature Request To The DB"""
     featureRequest = FeatureRequest(
         title=req['title'],
         description=req['description'],
@@ -49,31 +53,22 @@ def createFeatueRequest(req):
 
     db.session.add(featureRequest)
     db.session.commit()
+    # Refresh The Inserted Request To Get Its ID Back
     db.session.refresh(featureRequest)
     requestId = featureRequest.serializeModel['requestId']
     updateClientPriority(req['client'], req['client_priority'], requestId)
     return req
 
-
+# Will Update Priority While Keeping Gaps Between The Priorities
 def updateClientPriority(clientId, priority, requestId):
+    """Change The Priorities For A Spcefic Client Depened On The Newly Added/Updated Request"""
     requests = FeatureRequest.query.filter(
-        FeatureRequest.client_id == clientId)
-    flag = True
-    previous = None 
-    length = requests.count()
-    while(flag):
-        swap = False
-        for request in requests:
-            if request.serializeModel['requestId'] != requestId and request.client_priority == int(priority) and request.serializeModel['requestId'] != previous:
-                    request.client_priority += 1
-                    priority += 1
-                    swap = True   
-                    previous = request.serializeModel['requestId']   
-                    db.session.commit()
-                    break
-        if swap == 0:
-            flag = False
-
+        FeatureRequest.client_id == clientId).order_by(FeatureRequest.client_priority)
+    for request in requests:
+            if request.client_priority == int(priority) and request.serializeModel['requestId'] != requestId:
+                request.client_priority += 1
+                priority += 1
+                db.session.commit()
 
             # def updateClientPriority(clientId, priority, requestId):
             #     requests = FeatureRequest.query.filter(
@@ -95,6 +90,7 @@ def updateClientPriority(clientId, priority, requestId):
 
 
 def updateFeatureRequest(req):
+    """Update A spesfic Feature Request"""
     request = FeatureRequest.query.filter(
         FeatureRequest.id == req['requestId']).first()
 
@@ -111,9 +107,8 @@ def updateFeatureRequest(req):
 
 
 def deleteFeatureRequest(id):
+    """Deletes A Spesfic Feature Request"""
     request = FeatureRequest.query.filter(FeatureRequest.id == id).first()
     db.session.delete(request)
     db.session.commit()
     return str(request)
-
-
