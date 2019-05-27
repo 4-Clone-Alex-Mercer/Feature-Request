@@ -4,6 +4,7 @@ $(document).ready(function () {
 
     dataSource = new kendo.data.DataSource({
         transport: {
+            // Get All Feature Requests 
             read: function (options) {
                 $.ajax({
                     type: "GET",
@@ -16,6 +17,7 @@ $(document).ready(function () {
                 });
             },
             create: function (options) {
+                // Creates A New Feature Request
                 $.ajax({
                     type: "POST",
                     url: "/request/create",
@@ -23,25 +25,29 @@ $(document).ready(function () {
                     dataType: 'json',
                     data: JSON.stringify(options.data.models[0]),
                     success: function (data) {
+                        // Get All Feature Requests On Success
                         $("#grid").data("kendoGrid").dataSource.read();
                         options.success(data);
                     }
                 });
             },
             update: function (options) {
-                $.ajax({
+                // Update A Spesfic Feature Requests
+                $.ajax({                
                     type: "PUT",
                     url: "/request/update",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
                     data: JSON.stringify(options.data.models[0]),
                     success: function (data) {
+                        // Get All Feature Requests On Success
                         $("#grid").data("kendoGrid").dataSource.read();
                         options.success(data);
                     }
                 });
             },
             destroy: function (options) {
+                // Delete A Spesfic Feature Requests
                 $.ajax({
                     type: "DELETE",
                     url: "/request/delete",
@@ -49,6 +55,7 @@ $(document).ready(function () {
                     dataType: 'json',
                     data: JSON.stringify(options.data.models[0].requestId),
                     success: function (data) {
+                        // Get All Feature Requests On Success
                         $("#grid").data("kendoGrid").dataSource.read();
                         options.success(data);
                     }
@@ -58,6 +65,7 @@ $(document).ready(function () {
         batch: true,
         pageSize: 10,
         schema: {
+            // Specify The Schema For the Add And Edit PopUp
             model: {
                 id: "requestId",
                 fields: {
@@ -88,6 +96,7 @@ $(document).ready(function () {
         editable: "popup",
         edit: EditPopup,
         columns: [
+            // Specify How The Data Will Be Shown
             { field: "requestId", title: "Id", width: 70 },
             { field: "title", title: "Title" },
             { field: "description", title: "Description" },
@@ -105,6 +114,7 @@ $(document).ready(function () {
 });
 
 EditPopup = (e) => {
+    // Change The PopUp's Default Design
     $('.k-window-title').text("Feature Request");
     $('.k-grid-update').text("Save");
     $('.k-edit-field').first().remove();
@@ -112,6 +122,7 @@ EditPopup = (e) => {
 }
 
 function clientDropDownEditor(container, options) {
+    // Create A DropDown List To Get The Clients Names/IDs From The DB
     $('<input required name="' + options.field + '"/>')
         .appendTo(container)
         .kendoDropDownList({
@@ -128,6 +139,7 @@ function clientDropDownEditor(container, options) {
 }
 
 function areaDropDownEditor(container, options) {
+    // Create A DropDown List To Get The ProductAreas Names/IDs From The DB
     $('<input required name="' + options.field + '"/>')
         .appendTo(container)
         .kendoDropDownList({
