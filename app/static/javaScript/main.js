@@ -89,28 +89,52 @@ $(document).ready(function () {
 
     $("#grid").kendoGrid({
         dataSource: dataSource,
-        height: 700,
         sortable: true,
         reorderable: true,
+        filterable: {
+            extra: false,
+            operators: {
+                string: {
+                    startswith: "Starts with",
+                    eq: "Is equal to",
+                    neq: "Is not equal to"
+                },
+                number: {
+                    seq: "Is equal to",
+                    neq: "Is not equal to",
+                    gt: "Greater than",
+                    gte: "Greater than or equal to",
+                    lt: "Less than",
+                    lte: "Less than or equal to"
+                },
+                date: {
+                    eq: "Equal",
+                    gt: "After",
+                    gte: "After or equal to",
+                    lt: "Before",
+                    lte: "Before or equal to"
+                }
+            }
+        },
         resizable: true,
         pageable: {
             refresh: true,
             pageSizes: true,
             buttonCount: 5,
-            pageSize: [5, 10, 20],
+            pageSize: [10, 20],
         },
         toolbar: ["create"],
         editable: "popup",
         edit: EditPopup,
         columns: [
             // Specify How The Data Will Be Shown
-            { field: "requestId", title: "Id", width: 70 },
-            { field: "title", title: "Title" },
-            { field: "description", title: "Description" },
+            { field: "requestId", title: "Id", width: 70, filterable: false },
+            { field: "title", title: "Title", filterable: false },
+            { field: "description", title: "Description", filterable: false },
             { field: "target_date", title: "Target_date", template: '#= kendo.toString(kendo.parseDate(target_date), "dd/MM/yyyy")#' },
             { field: "client_priority", title: "Client_priority" },
-            { field: "client", title: "Client", editor: clientDropDownEditor },
-            { field: "product_area", title: "Product_area", editor: areaDropDownEditor },
+            { field: "client", title: "Client", editor: clientDropDownEditor, filterable: { ui: clientFilter } },
+            { field: "product_area", title: "Product_area", editor: areaDropDownEditor, filterable: { ui: productAreaFilter } },
             { command: ["edit", "destroy"], title: "&nbsp;" }
         ],
 
@@ -119,6 +143,33 @@ $(document).ready(function () {
 
 
 });
+
+
+function clientFilter(element) {
+    element.kendoDropDownList({
+        dataTextField: "name",
+        dataValueField: "name",
+        dataSource: {
+            transport: {
+                read: "/clients"
+            }
+        },
+        optionLabel: "--Select Value--"
+    });
+}
+
+function productAreaFilter(element) {
+    element.kendoDropDownList({
+        dataTextField: "name",
+        dataValueField: "name",
+        dataSource: {
+            transport: {
+                read: "/areas"
+            }
+        },
+        optionLabel: "--Select Value--"
+    });
+}
 
 EditPopup = (e) => {
     // Change The PopUp's Default Design
