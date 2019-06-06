@@ -95,11 +95,12 @@ $(document).ready(function () {
             extra: false,
             operators: {
                 string: {
-                    startswith: "Starts with",
+                    // Define What Sort Of Filtration Is Needed For String Type Columns
                     eq: "Is equal to",
                     neq: "Is not equal to"
                 },
                 number: {
+                    // Define What Sort Of Filtration Is Needed For Number Type Columns
                     seq: "Is equal to",
                     neq: "Is not equal to",
                     gt: "Greater than",
@@ -108,6 +109,7 @@ $(document).ready(function () {
                     lte: "Less than or equal to"
                 },
                 date: {
+                    // Define What Sort Of Filtration Is Needed For Date Type Columns
                     eq: "Equal",
                     gt: "After",
                     gte: "After or equal to",
@@ -146,6 +148,7 @@ $(document).ready(function () {
 
 
 function clientFilter(element) {
+    // Create A DropDown List To Get The Clients Names/IDs From The DB To Use With Client Filtration
     element.kendoDropDownList({
         dataTextField: "name",
         dataValueField: "name",
@@ -159,6 +162,7 @@ function clientFilter(element) {
 }
 
 function productAreaFilter(element) {
+    // Create A DropDown List To Get The Clients Names/IDs From The DB To Use With Product Area Filtration
     element.kendoDropDownList({
         dataTextField: "name",
         dataValueField: "name",
