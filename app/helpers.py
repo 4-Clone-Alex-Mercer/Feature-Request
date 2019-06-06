@@ -4,12 +4,15 @@ from app.models import FeatureRequest, ProductArea, Client
 
 def validateRequests(req):
     """Validates Wither The Request Is In The Right Format Or Not"""
+    if (req['client_id']):
+        req['client'] = req['client_id']
+        req['product_area'] = req['product_area_id']
     if len(req['title']) <= 50:
         if len(req['description']) <= 1500:
             if type(req['target_date']) == str:
                 if type(int(req['client_priority'])) == int and req['client_priority'] > 0:
-                    if type(int(req['client'])) == int:
-                        if type(int(req['product_area'])) == int:
+                    if type(int(req['client'])) == int or type(int(req['client_id'])):
+                        if type(int(req['product_area'])) == int or type(int(req['product_area_id'])):
                             return True
     return False
 
@@ -60,49 +63,53 @@ def createFeatueRequest(req):
     return req
 
 # Will Update Priority While Keeping Gaps Between The Priorities
+
+
 def updateClientPriority(clientId, priority, requestId):
-    """Change The Priorities For A Spcefic Client Depened On The Newly Added/Updated Request"""
+    """Change The Priorities For A Spcefic Client Depened On The Newly Added/Updated Request With Gaps"""
     requests = FeatureRequest.query.filter(
         FeatureRequest.client_id == clientId).order_by(FeatureRequest.client_priority)
     for request in requests:
-            if request.client_priority == int(priority) and request.serializeModel['requestId'] != requestId:
-                request.client_priority += 1
-                priority += 1
-                db.session.commit()
+        if request.client_priority == int(priority) and request.serializeModel['requestId'] != requestId:
+            request.client_priority += 1
+            priority += 1
+            db.session.commit()
 
-            # def updateClientPriority(clientId, priority, requestId):
-            #     requests = FeatureRequest.query.filter(
-            #         FeatureRequest.client_id == clientId).order_by(FeatureRequest.client_priority.desc())
-            #     Count = requests.count()
-            #     length = requests.count()
-            #     first = requests[0].client_priority
-            #     last = requests[length-1].client_priority
+        # def updateClientPriority(clientId, priority, requestId):
+        #  """Change The Priorities For A Spcefic Client Depened On The Newly Added/Updated Request Without Gaps """
+        #     requests = FeatureRequest.query.filter(
+        #         FeatureRequest.client_id == clientId).order_by(FeatureRequest.client_priority.desc())
+        #     Count = requests.count()
+        #     length = requests.count()
+        #     first = requests[0].client_priority
+        #     last = requests[length-1].client_priority
 
-            #     if length == 1:
-            #         requests[0].client_priority = 1
-            #         db.session.commit()
+        #     if length == 1:
+        #         requests[0].client_priority = 1
+        #         db.session.commit()
 
-            #     elif last - first != length-1 and last - length != 0:
-            #         for request in requests:
-            #             request.client_priority = length
-            #             length -= 1
-            #         db.session.commit()
+        #     elif last - first != length-1 and last - length != 0:
+        #         for request in requests:
+        #             request.client_priority = length
+        #             length -= 1
+        #         db.session.commit()
 
 
 def updateFeatureRequest(req):
     """Update A spesfic Feature Request"""
     request = FeatureRequest.query.filter(
-        FeatureRequest.id == req['requestId']).first()
+        FeatureRequest.id == req['id']).first()
 
-    request.title = req['title']
-    request.description = req['description']
-    request.target_date = req['target_date']
-    request.client_priority = req['client_priority']
-    request.client_id = req['client']
-    request.product_area_id = req['product_area']
+    request.title=req['title']
+    request.description=req['description']
+    request.target_date=req['target_date']
+    request.client_priority=req['client_priority']
+    request.client_id=req['client']
+    request.product_area_id=req['product_area']
 
     db.session.commit()
-    updateClientPriority(clientId, req['client_priority'], req['requestId'])
+    updateClientPriority(
+        req['client_id'], req['client_priority'], req['id'])
     return req
 
 

@@ -32,13 +32,20 @@ $(document).ready(function () {
                 });
             },
             update: function (options) {
+                let ele = options.data.models[0]
+                let data = {
+                    id: ele.requestId, title: ele.title, description: ele.description,
+                    target_date: ele.target_date, client_priority: ele.client_priority,
+                    client_id: ele.client, product_area_id: ele.product_area
+                }
+                console.log(data)
                 // Update A Spesfic Feature Requests
-                $.ajax({                
+                $.ajax({
                     type: "PUT",
                     url: "/request/update",
                     contentType: "application/json; charset=utf-8",
                     dataType: 'json',
-                    data: JSON.stringify(options.data.models[0]),
+                    data: JSON.stringify(data),
                     success: function (data) {
                         // Get All Feature Requests On Success
                         $("#grid").data("kendoGrid").dataSource.read();
@@ -121,7 +128,7 @@ EditPopup = (e) => {
     $('.k-edit-label').first().remove();
 }
 
-function clientDropDownEditor(container, options) {
+clientDropDownEditor = (container, options) => {
     // Create A DropDown List To Get The Clients Names/IDs From The DB
     $('<input required name="' + options.field + '"/>')
         .appendTo(container)
@@ -137,8 +144,7 @@ function clientDropDownEditor(container, options) {
 
         });
 }
-
-function areaDropDownEditor(container, options) {
+areaDropDownEditor = (container, options) => {
     // Create A DropDown List To Get The ProductAreas Names/IDs From The DB
     $('<input required name="' + options.field + '"/>')
         .appendTo(container)
