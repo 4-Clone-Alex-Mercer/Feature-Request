@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $('body').append('<div id="grid"></div>')
+    $('#main-div').append('<div id="grid"></div>')
 
     dataSource = new kendo.data.DataSource({
         transport: {
