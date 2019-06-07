@@ -77,10 +77,10 @@ class FeatureRequestsTestCase(BaseTestCase):
         for content in contents:
             self.assertIn(content, str(response.data))
 
-    def test_create_feature_request(self):
+    def test_creae_featture_request(self):
 
         data = {'title': 'Title', 'description': 'Description',
-                'target_date': '2019-1-7', 'client_priority': 1, 'client': 'Client A', 'product_area': 'Claims'}
+                'target_date': '2019-1-7', 'client_priority': 1, 'client': '1', 'product_area': '3'}
 
         response = self.client.post(
             '/request/create',
@@ -92,7 +92,7 @@ class FeatureRequestsTestCase(BaseTestCase):
     def test_update_feature_request(self):
 
         data = {'title': 'Title', 'description': 'Description',
-                'target_date': '2019-1-7', 'client_priority': 3, 'client': 'Client C', 'product_area': 'Claims', 'requestId': 1}
+                'target_date': '2019-1-7', 'client_priority': 3, 'client': 3, 'product_area': 3, 'id': 1}
 
         response = self.client.put(
             '/request/update',
@@ -114,7 +114,7 @@ class FeatureRequestsTestCase(BaseTestCase):
 
     def test_update_praiority(self):
         data = {'title': 'Title', 'description': 'Description',
-                'target_date': '2019-1-7', 'client_priority': 1, 'client': 'Client A', 'product_area': 'Claims'}
+                'target_date': '2019-1-7', 'client_priority': 1, 'client': 1, 'product_area': 3,}
 
         response = self.client.post(
             '/request/create',

@@ -2,20 +2,6 @@ from app import db
 from app.models import FeatureRequest, ProductArea, Client
 
 
-def validateRequests(req):
-    """Validates Wither The Request Is In The Right Format Or Not"""
-    if (req['client_id']):
-        req['client'] = req['client_id']
-        req['product_area'] = req['product_area_id']
-    if len(req['title']) <= 50:
-        if len(req['description']) <= 1500:
-            if type(req['target_date']) == str:
-                if type(int(req['client_priority'])) == int and req['client_priority'] > 0:
-                    if type(int(req['client'])) == int or type(int(req['client_id'])):
-                        if type(int(req['product_area'])) == int or type(int(req['product_area_id'])):
-                            return True
-    return False
-
 
 def getAllRequests():
     """Returns A List Of All The Feature Requests"""
@@ -109,7 +95,7 @@ def updateFeatureRequest(req):
 
     db.session.commit()
     updateClientPriority(
-        req['client_id'], req['client_priority'], req['id'])
+        req['client'], req['client_priority'], req['id'])
     return req
 
 

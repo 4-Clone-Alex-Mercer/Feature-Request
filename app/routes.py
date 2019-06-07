@@ -27,18 +27,17 @@ def getAllAreas():
 
 @routes.route('/request/create', methods=['POST'])
 def createFeatureRequests():
-    from app.helpers import validateRequests, createFeatueRequest
+    from app.helpers import createFeatueRequest
     data = request.get_json()
-    if validateRequests(data):
-        return jsonify(createFeatueRequest(data))
+    return jsonify(createFeatueRequest(data))
 
+        
 
 @routes.route('/request/update', methods=['PUT'])
 def updateFeatureRequests():
-    from app.helpers import validateRequests, updateFeatureRequest
+    from app.helpers import updateFeatureRequest
     data = request.get_json()
-    if validateRequests(data):
-        return jsonify(updateFeatureRequest(data))
+    return jsonify(updateFeatureRequest(data))    
 
 
 @routes.route('/request/delete', methods=['DELETE'])
