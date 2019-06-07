@@ -77,6 +77,21 @@ class FeatureRequestsTestCase(BaseTestCase):
         for content in contents:
             self.assertIn(content, str(response.data))
 
+
+    def test_get_clients(self):
+        response = self.client.get("/clients")
+        contents = ['Client C', 'Client B', 'Client A']
+        for content in contents:
+            self.assertIn(content, str(response.data))
+
+
+    def test_get_product_areas(self):
+        response = self.client.get("/areas")
+        contents = ['Billings', 'Claims', 'Reports', 'Policies']
+        for content in contents:
+            self.assertIn(content, str(response.data))
+
+
     def test_creae_featture_request(self):
 
         data = {'title': 'Title', 'description': 'Description',
@@ -88,6 +103,7 @@ class FeatureRequestsTestCase(BaseTestCase):
             data=json.dumps(data),
         )
         self.assertEqual(200, response.status_code)
+
 
     def test_update_feature_request(self):
 
@@ -101,6 +117,7 @@ class FeatureRequestsTestCase(BaseTestCase):
         )
         self.assertEqual(200, response.status_code)
 
+
     def test_delete_feature_request(self):
 
         data = "2"
@@ -111,6 +128,7 @@ class FeatureRequestsTestCase(BaseTestCase):
             data=json.dumps(data),
         )
         self.assertEqual(200, response.status_code)
+
 
     def test_update_praiority(self):
         data = {'title': 'Title', 'description': 'Description',

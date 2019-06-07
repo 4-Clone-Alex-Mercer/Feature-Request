@@ -11,6 +11,8 @@ flask = "*"
 flask-sqlalchemy = "*"
 pymysql = "*"
 flask-testing = "*"
+pytest = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.7"
