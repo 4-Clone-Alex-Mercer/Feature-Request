@@ -13,6 +13,7 @@ pymysql = "*"
 flask-testing = "*"
 pytest = "*"
 coverage = "*"
+mysqlclient = "*"
 
 [requires]
 python_version = "3.7"
